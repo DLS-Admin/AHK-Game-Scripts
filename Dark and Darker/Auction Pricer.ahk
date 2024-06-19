@@ -1,7 +1,7 @@
 #SingleInstance force
 #Requires AutoHotkey v2.0+
-#include ..\Libs\OCR.ahk ; https://github.com/Descolada/OCR
-#include .\Helper.ahk
+#include SET YOUR OWN PATH\OCR.ahk ; https://github.com/Descolada/OCR
+#include SET YOUR OWN PATH\Helper.ahk
 
 ; https://github.com/MonzterDev/AHK-Game-Scripts
 
@@ -14,6 +14,7 @@ F3::
 
     if (itemName = "") {
         ToolTip("Item not found, try again.")
+        SetTimer RemoveToolTip, -2000 ; Set timer to remove tooltip after 2 seconds
         return
     }
 
@@ -23,55 +24,61 @@ F3::
     ; We could use OCR for most of the following steps.
 
     ; Now we swap to view market tab
-    MouseClick("Left", 850, 115, ,) ; View Market button
+    MouseClick("Left", 850, 115) ; View Market button
     Sleep(500)
 
-    MouseClick("Left", 1785, 200, ,) ; Reset Filters button
+    MouseClick("Left", 1785, 200) ; Reset Filters button
     Sleep(400)
 
-    MouseClick("Left", 400, 200, , ) ; Click rarity selection
+    MouseClick("Left", 400, 200) ; Click rarity selection
     Sleep(100)
     if (rarity = "Uncommon") {
-        MouseClick("Left", 400, 325, , ) ; Click rarity
+        MouseClick("Left", 400, 325) ; Click rarity
+    } else if (rarity = "Common") {
+        MouseClick("Left", 400, 300) ; Click rarity
     } else if (rarity = "Rare") {
-        MouseClick("Left", 400, 350, , ) ; Click rarity
+        MouseClick("Left", 400, 350) ; Click rarity
     } else if (rarity = "Epic") {
-        MouseClick("Left", 400, 375, , ) ; Click rarity
+        MouseClick("Left", 400, 375) ; Click rarity
     } else if (rarity = "Legend") {
-        MouseClick("Left", 400, 400, , ) ; Click rarity
+        MouseClick("Left", 400, 400) ; Click rarity
     } else if (rarity = "Unique") {
-        MouseClick("Left", 400, 425, , ) ; Click rarity
+        MouseClick("Left", 400, 425) ; Click rarity
     }
     Sleep(100)
 
-    MouseClick("Left", 150, 200, , ) ; Click item name selection
+    MouseClick("Left", 150, 200) ; Click item name selection
     Sleep(100)
-    MouseClick("Left", 150, 250, , ) ; Click item name search box
+    MouseClick("Left", 150, 250) ; Click item name search box
     Sleep(200)
     Send(itemName) ; Type item name
     Sleep(100)
-    MouseClick("Left", 150, 275, , ) ; Click item name
+    MouseClick("Left", 150, 275) ; Click item name
     Sleep(100)
 
-
-    MouseClick("Left", 1500, 200, , ) ; Click random attributes
+    MouseClick("Left", 1500, 200) ; Click random attributes
     Sleep(100)
-    MouseClick("Left", 1500, 250, , ) ; Click enchantment name search box
+    MouseClick("Left", 1500, 250) ; Click enchantment name search box
     Sleep(250)
     Send("^a{BS}") ; Clear textbox
     Sleep(100)
     Send(enchantment) ; Type enchantment name
     Sleep(100)
-    MouseClick("Left", 1500, 275, , ) ; Click enchantment name
+    MouseClick("Left", 1500, 275) ; Click enchantment name
     Sleep(100)
-    MouseClick("Left", 1800, 275, , ) ; Click search
+    MouseClick("Left", 1800, 275) ; Click search
 }
 
+RemoveToolTip() {
+    ToolTip  ; Remove the tooltip
+}
 
 GetItemRarity(ocrResult) {
     rarity := ""
     if InStr(ocrResult, "Uncommon") {
         rarity := "Uncommon"
+    } else if InStr(ocrResult, "Common") {
+        rarity := "Common"
     } else if InStr(ocrResult, "Rare") {
         rarity := "Rare"
     } else if InStr(ocrResult, "Epic") {
